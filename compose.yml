@@ -1,0 +1,55 @@
+networks:
+  default:
+    name: tecnofit
+    external: false
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - 8000:8000
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=tecnofit
+      - DB_USERNAME=tecnofit
+      - DB_PASSWORD=tecnofit
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tecnofit
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mnt:/var/lib/mysql
+      - ./database/Migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-u",
+          "root",
+          "-p$$MYSQL_ROOT_PASSWORD",
+        ]
+      timeout: 20s
+      retries: 10
+      interval: 30s
+      start_period: 30s
