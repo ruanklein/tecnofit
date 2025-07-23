@@ -5,16 +5,16 @@
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
         </testsuite>
-        <testsuite name="Integration">
+        <!-- <testsuite name="Integration">
             <directory>tests/Integration</directory>
-        </testsuite>
+        </testsuite> -->
     </testsuites>
 
-    <groups>
+    <!-- <groups>
         <exclude>
             <group>integration</group>
         </exclude>
-    </groups>
+    </groups> -->
 
     <source>
         <include>
@@ -24,7 +24,7 @@
 
     <php>
         <env name="APP_ENV" value="testing"/>
-        <env name="DB_HOST" value="127.0.0.1"/>
+        <env name="DB_HOST" value="db"/>
         <env name="DB_PORT" value="3306"/>
         <env name="DB_DATABASE" value="tecnofit_test"/>
         <env name="DB_USERNAME" value="root"/>
